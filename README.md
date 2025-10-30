@@ -1,6 +1,6 @@
 # Share and Tell
 
-Share and Tell is a lightweight report generator that scans a file share, highlights folders that contain a meaningful number of files, and produces an artefact (JSON by default, optional HTML) that teams can enrich with descriptive comments. The resulting output can be shared with colleagues to explain the structure and purpose of a shared drive.
+Share and Tell is a lightweight report generator that scans a file share, highlights folders that contain a meaningful number of files, and produces an artifact (JSON by default, optional HTML) that teams can enrich with descriptive comments. The resulting output can be shared with colleagues to explain the structure and purpose of a shared drive.
 
 ## Features
 
