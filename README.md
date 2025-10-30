@@ -109,6 +109,11 @@ docker compose run --rm share-and-tell --format both --output /output /share
 
 Edit `docker-compose.yml` to point to the correct host path.
 
+### Platform Notes
+
+- **Windows (Docker Desktop / WSL 2):** Ensure the network share is mounted to a drive letter (for example `Z:`). When invoking Docker directly, map that drive into the container: `docker run --rm -v Z:/:/share:ro -v %cd%/reports:/output share-and-tell:local --format both --output /output /share`. If you launch the container from an Ubuntu WSL shell, reference the same drive through `/mnt/z` instead (`docker run --rm -v /mnt/z:/share:ro ...`). Confirm that Docker Desktop has access to the drive in *Settings → Resources → File Sharing*.
+- **macOS:** Mount the share (e.g. via Finder using *Go → Connect to Server*), which will appear under `/Volumes/<ShareName>`. Invoke Docker with `docker run --rm -v /Volumes/TeamShare:/share:ro -v "$(pwd)/reports":/output share-and-tell:local --format both --output /output /share`. Adjust the `/Volumes/...` path to match the mounted volume name and ensure the share is mounted before running the container.
+
 ## Development
 
 - Install development dependencies: `pip install -e .[test]`.
