@@ -4,7 +4,7 @@ Share and Tell is a lightweight report generator that scans a file share, highli
 
 ## Features
 
-- Traverse a directory tree up to a configurable depth (default `4`).
+- Traverse a directory tree up to a configurable depth (default `3`).
 - Record folders that meet a configurable importance threshold measured by the number of files (default `3`).
 - Produce JSON and HTML outputs with folder metadata and editable comment fields.
 - Optional pre-population of comments from a JSON mapping.
@@ -27,7 +27,7 @@ share-and-tell ROOT [--max-depth N] [--min-files N] [--format json|html|both]
 ```
 
 - `ROOT`: Root directory to analyse (UNC paths such as `\\\\server\\share` are supported).
-- `--max-depth`: Maximum depth to traverse; defaults to `4`.
+- `--max-depth`: Maximum depth to traverse; defaults to `3`.
 - `--min-files`: Minimum number of files required in a folder; defaults to `3`.
 - `--format`: `json`, `html`, or `both`; defaults to `json`.
 - `--output`: Destination file (or directory for `both`).

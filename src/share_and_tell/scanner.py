@@ -47,7 +47,7 @@ def normalise_comments(comments: Dict[str, str], root: Path) -> Dict[str, str]:
 
 def scan_directory(
     root: Path,
-    max_depth: int = 4,
+    max_depth: int = 3,
     min_files: int = 3,
     comments: Dict[str, str] | None = None,
 ) -> ScanResult:

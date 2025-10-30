@@ -25,8 +25,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--max-depth",
         type=int,
-        default=4,
-        help="Maximum depth to traverse below the root (default: 4)",
+        default=3,
+        help="Maximum depth to traverse below the root (default: 3)",
     )
     parser.add_argument(
         "--min-files",
