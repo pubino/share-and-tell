@@ -91,6 +91,8 @@ The accompanying HTML view renders the same information as both a table and an e
 </table>
 ```
 
+You can view a full render by opening `docs/example-report.html` in a browser.
+
 ## Docker
 
 Build the container image:

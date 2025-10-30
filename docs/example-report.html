@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Share and Tell Sample Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; color: #222; }
+    table { border-collapse: collapse; width: 100%; max-width: 960px; margin-bottom: 2rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem 0.75rem; text-align: left; }
+    th { background-color: #f2f2f2; }
+    td.num { text-align: right; width: 4rem; }
+    ul { list-style-type: none; padding-left: 1.25rem; }
+    ul ul { border-left: 1px solid #ddd; margin-left: 0.5rem; padding-left: 1.25rem; }
+    .comment { color: #555; margin-left: 0.5rem; font-style: italic; }
+    .warnings { color: #a94442; }
+    .metadata { margin-bottom: 1.5rem; }
+    .metadata span { display: inline-block; margin-right: 1.5rem; }
+    .outline-root > .folder { font-weight: 600; }
+    .outline-root { margin-left: 0.25rem; }
+  </style>
+</head>
+<body>
+  <h1>Share and Tell Report (Sample)</h1>
+  <section class="metadata">
+    <span><strong>Root:</strong> \\storage\\team-share</span>
+    <span><strong>Max Depth:</strong> 2</span>
+    <span><strong>Min Files:</strong> 3</span>
+    <span><strong>Generated:</strong> 2025-10-30T15:00:00Z</span>
+  </section>
+  <section>
+    <h2>Folder Summary</h2>
+    <table>
+      <thead>
+        <tr><th>Folder</th><th>Depth</th><th>Files</th><th>Comment</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>.</td><td class="num">0</td><td class="num">1</td><td>Top-level share for departmental reference docs</td></tr>
+        <tr><td>Finance/Invoices</td><td class="num">2</td><td class="num">12</td><td>Monthly invoice PDFs</td></tr>
+        <tr><td>HR/Policies</td><td class="num">2</td><td class="num">7</td><td>Authoritative HR policy documents</td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section>
+    <h2>Outline View</h2>
+    <div class="outline-root">
+      <span class="folder">team-share</span><span class="comment">Top-level share for departmental reference docs</span>
+      <ul>
+        <li><span class="folder">Finance</span>
+          <ul>
+            <li><span class="folder">Invoices</span><span class="comment">Monthly invoice PDFs</span></li>
+          </ul>
+        </li>
+        <li><span class="folder">HR</span>
+          <ul>
+            <li><span class="folder">Policies</span><span class="comment">Authoritative HR policy documents</span></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </section>
+  <section>
+    <h2>Warnings</h2>
+    <ul class="warnings">
+      <li>Skipped \\storage\\team-share\\Archive: [Errno 13] Permission denied</li>
+    </ul>
+  </section>
+</body>
+</html>
