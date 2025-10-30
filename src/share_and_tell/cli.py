@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from typing import Dict
 
-from .output import render_html, render_json
+from .output import render_csv, render_html, render_json
 from .scanner import scan_directory
 
 
@@ -36,7 +36,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--format",
-        choices=["json", "html", "both"],
+        choices=["json", "html", "csv", "both", "all"],
         default="json",
         help="Output format (default: json)",
     )
@@ -99,6 +99,7 @@ def main(argv: list[str] | None = None) -> int:
 
     json_output = render_json(result, root_path, args.max_depth, args.min_files)
     html_output = render_html(result, root_path, args.max_depth, args.min_files)
+    csv_output = render_csv(result, root_path, args.max_depth, args.min_files)
 
     if args.format == "json":
         if args.output:
@@ -115,14 +116,35 @@ def main(argv: list[str] | None = None) -> int:
             sys.stdout.write(html_output)
         return 0
 
+    if args.format == "csv":
+        if args.output:
+            args.output.write_text(csv_output, encoding="utf-8")
+        else:
+            sys.stdout.write(csv_output)
+            if not csv_output.endswith("\n"):
+                sys.stdout.write("\n")
+        return 0
+
     # args.format == "both"
+    if args.format == "both":
+        if args.output is None:
+            raise SystemExit("--output must be provided when using --format both")
+
+        target_dir = args.output
+        target_dir.mkdir(parents=True, exist_ok=True)
+        (target_dir / "share-and-tell.json").write_text(json_output, encoding="utf-8")
+        (target_dir / "share-and-tell.html").write_text(html_output, encoding="utf-8")
+        return 0
+
+    # args.format == "all"
     if args.output is None:
-        raise SystemExit("--output must be provided when using --format both")
+        raise SystemExit("--output must be provided when using --format all")
 
     target_dir = args.output
     target_dir.mkdir(parents=True, exist_ok=True)
     (target_dir / "share-and-tell.json").write_text(json_output, encoding="utf-8")
     (target_dir / "share-and-tell.html").write_text(html_output, encoding="utf-8")
+    (target_dir / "share-and-tell.csv").write_text(csv_output, encoding="utf-8")
     return 0
 
 

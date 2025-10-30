@@ -1,11 +1,18 @@
 from __future__ import annotations
 
 import json
+import csv
+import io
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Tuple
 
 from .scanner import FolderInfo, ScanResult
+
+
+def _folder_sort_key(folder: FolderInfo) -> str:
+    folder_label = folder.as_dict()["folder"]
+    return folder_label or "."
 
 
 def render_json(
@@ -68,7 +75,7 @@ def render_html(
         return "<ul>" + "".join(items) + "</ul>"
 
     rows = []
-    for folder in result.folders:
+    for folder in sorted(result.folders, key=_folder_sort_key):
         rows.append(
             "<tr>"
             f"<td>{_escape(folder.as_dict()['folder'])}</td>"
@@ -166,3 +173,23 @@ def _escape(value: str) -> str:
         .replace('"', "&quot;")
         .replace("'", "&#x27;")
     )
+
+
+def render_csv(
+    result: ScanResult,
+    root: Path,
+    max_depth: int,
+    min_files: int,
+) -> str:
+    buffer = io.StringIO()
+    writer = csv.writer(buffer)
+    writer.writerow(["folder", "absolute_path", "depth", "file_count", "comment"])
+    for folder in sorted(result.folders, key=_folder_sort_key):
+        writer.writerow([
+            folder.as_dict()["folder"],
+            str(folder.absolute_path),
+            folder.depth,
+            folder.file_count,
+            folder.comment,
+        ])
+    return buffer.getvalue()

@@ -6,7 +6,7 @@ Share and Tell is a lightweight report generator that scans a file share, highli
 
 - Traverse a directory tree up to a configurable depth (default `3`).
 - Record folders that meet a configurable importance threshold measured by the number of files (default `3`).
-- Produce JSON and HTML outputs with folder metadata and editable comment fields.
+- Produce JSON, HTML, and CSV outputs with folder metadata and editable comment fields.
 - Optional pre-population of comments from a JSON mapping.
 - Docker image and `docker-compose` configuration for read-only execution against a shared path.
 
@@ -29,8 +29,8 @@ share-and-tell ROOT [--max-depth N] [--min-files N] [--format json|html|both]
 - `ROOT`: Root directory to analyse (UNC paths such as `\\\\server\\share` are supported).
 - `--max-depth`: Maximum depth to traverse; defaults to `3`.
 - `--min-files`: Minimum number of files required in a folder; defaults to `3`.
-- `--format`: `json`, `html`, or `both`; defaults to `json`.
-- `--output`: Destination file (or directory for `both`).
+- `--format`: `json`, `html`, `csv`, `both` (json + html), or `all` (json + html + csv); defaults to `json`.
+- `--output`: Destination file (or directory for `both`/`all`).
 - `--comments-file`: Path to a JSON mapping of folder paths to comments.
 
 When running with `--format both`, supply `--output` with a directory path; the command will write `share-and-tell.json` and `share-and-tell.html` inside that directory.

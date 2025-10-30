@@ -3,7 +3,7 @@
 ## Architecture
 
 - Core scanning logic lives in `src/share_and_tell/scanner.py` and produces `FolderInfo` records via `scan_directory`.
-- Rendering helpers in `src/share_and_tell/output.py` are responsible for JSON and HTML serialisation.
+- Rendering helpers in `src/share_and_tell/output.py` are responsible for JSON, HTML, and CSV serialisation.
 - The CLI entry point in `src/share_and_tell/cli.py` orchestrates argument parsing, scanning, and output.
 - Tests reside under `tests/` and use `pytest`.
 

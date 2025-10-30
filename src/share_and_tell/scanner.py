@@ -100,5 +100,9 @@ def scan_directory(
         for child_path in reversed(sorted(child_directories, key=lambda item: str(item))):
             stack.append((child_path, depth + 1))
 
-    folders.sort(key=lambda item: (item.depth, str(item.relative_path)))
+    def _sort_key(info: FolderInfo) -> str:
+        normalised = str(info.relative_path).replace(os.sep, "/")
+        return normalised or "."
+
+    folders.sort(key=_sort_key)
     return ScanResult(folders=folders, warnings=warnings)

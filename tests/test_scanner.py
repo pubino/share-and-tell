@@ -22,8 +22,7 @@ def test_scan_directory_filters_by_min_files(tmp_path: Path) -> None:
     result = scan_directory(tmp_path, max_depth=4, min_files=3)
     folders = [item.as_dict()["folder"] for item in result.folders]
 
-    assert "." in folders
-    assert "dept_a" in folders
+    assert folders == [".", "dept_a"]
     assert "dept_b" not in folders
 
 

@@ -5,4 +5,4 @@ services:
     volumes:
       - ./sample-share:/share:ro
       - ./reports:/output
-    command: ["--format", "both", "--output", "/output", "/share"]
+  command: ["--format", "all", "--output", "/output", "/share"]
