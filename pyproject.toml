@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "share-and-tell"
+version = "0.1.0"
+description = "Directory summary tool for documenting shared storage."
+readme = "README.md"
+authors = [{ name = "Princeton University" }]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+share-and-tell = "share_and_tell.cli:main"

@@ -1,0 +1,8 @@
+services:
+  share-and-tell:
+    build: .
+    container_name: share-and-tell
+    volumes:
+      - ./sample-share:/share:ro
+      - ./reports:/output
+    command: ["--format", "both", "--output", "/output", "/share"]
