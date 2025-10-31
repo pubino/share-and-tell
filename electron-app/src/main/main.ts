@@ -87,6 +87,25 @@ function authenticateIpcHandlers(): void {
     return result.filePath;
   });
 
+  ipcMain.handle("share-and-tell/select-existing", async (event: IpcMainInvokeEvent) => {
+    const browserWindow = BrowserWindow.fromWebContents(event.sender);
+    const openOptions: OpenDialogOptions = {
+      title: "Select existing JSON file to load comments from",
+      filters: [
+        { name: "JSON files", extensions: ["json"] },
+        { name: "All files", extensions: ["*"] },
+      ],
+      properties: ["openFile"],
+    };
+    const result = browserWindow
+      ? await dialog.showOpenDialog(browserWindow, openOptions)
+      : await dialog.showOpenDialog(openOptions);
+    if (result.canceled || result.filePaths.length === 0) {
+      return undefined;
+    }
+    return result.filePaths[0];
+  });
+
   ipcMain.handle("share-and-tell/run", async (
     _event: IpcMainInvokeEvent,
     options: RunOptions,

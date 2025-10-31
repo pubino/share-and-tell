@@ -7,6 +7,9 @@ const api = {
   async selectOutputFile(initialPath) {
     return ipcRenderer.invoke("share-and-tell/select-output", initialPath);
   },
+  async selectExistingFile() {
+    return ipcRenderer.invoke("share-and-tell/select-existing");
+  },
   async runScan(options) {
     return ipcRenderer.invoke("share-and-tell/run", options);
   },

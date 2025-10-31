@@ -1,0 +1,149 @@
+{
+  "generated_at": "2025-10-31T15:14:18.955984+00:00",
+  "root": "/Users/bino/Downloads",
+  "max_depth": 1,
+  "min_files": 1,
+  "folders": [
+    {
+      "folder": ".",
+      "absolute_path": "/Users/bino/Downloads",
+      "depth": 0,
+      "file_count": 107,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": ".ipynb_checkpoints",
+      "absolute_path": "/Users/bino/Downloads/.ipynb_checkpoints",
+      "depth": 1,
+      "file_count": 2,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "2024 Summit",
+      "absolute_path": "/Users/bino/Downloads/2024 Summit",
+      "depth": 1,
+      "file_count": 117,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "2024_2025 COOP Cloud",
+      "absolute_path": "/Users/bino/Downloads/2024_2025 COOP Cloud",
+      "depth": 1,
+      "file_count": 2,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "ORF-401-BeyondHTTP",
+      "absolute_path": "/Users/bino/Downloads/ORF-401-BeyondHTTP",
+      "depth": 1,
+      "file_count": 3,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "ORFE Graphics Package for Designers",
+      "absolute_path": "/Users/bino/Downloads/ORFE Graphics Package for Designers",
+      "depth": 1,
+      "file_count": 2,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "PGscen",
+      "absolute_path": "/Users/bino/Downloads/PGscen",
+      "depth": 1,
+      "file_count": 8,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "Robust-HCLUB",
+      "absolute_path": "/Users/bino/Downloads/Robust-HCLUB",
+      "depth": 1,
+      "file_count": 19,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "Rsafd",
+      "absolute_path": "/Users/bino/Downloads/Rsafd",
+      "depth": 1,
+      "file_count": 7,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "footage",
+      "absolute_path": "/Users/bino/Downloads/footage",
+      "depth": 1,
+      "file_count": 3,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "gcal-groups-main",
+      "absolute_path": "/Users/bino/Downloads/gcal-groups-main",
+      "depth": 1,
+      "file_count": 5,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "moves",
+      "absolute_path": "/Users/bino/Downloads/moves",
+      "depth": 1,
+      "file_count": 12,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "orfe-zulipbot",
+      "absolute_path": "/Users/bino/Downloads/orfe-zulipbot",
+      "depth": 1,
+      "file_count": 7,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "robolist",
+      "absolute_path": "/Users/bino/Downloads/robolist",
+      "depth": 1,
+      "file_count": 6,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "share-and-tell",
+      "absolute_path": "/Users/bino/Downloads/share-and-tell",
+      "depth": 1,
+      "file_count": 13,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "smartdrivingcar",
+      "absolute_path": "/Users/bino/Downloads/smartdrivingcar",
+      "depth": 1,
+      "file_count": 17,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "sn-offline-api",
+      "absolute_path": "/Users/bino/Downloads/sn-offline-api",
+      "depth": 1,
+      "file_count": 11,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "symposium-schedule",
+      "absolute_path": "/Users/bino/Downloads/symposium-schedule",
+      "depth": 1,
+      "file_count": 7,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "token-sheet-main",
+      "absolute_path": "/Users/bino/Downloads/token-sheet-main",
+      "depth": 1,
+      "file_count": 5,
+      "comment": "This is a test comment"
+    },
+    {
+      "folder": "us.sitesucker.mac.sitesucker",
+      "absolute_path": "/Users/bino/Downloads/us.sitesucker.mac.sitesucker",
+      "depth": 1,
+      "file_count": 2,
+      "comment": "This is a test comment"
+    }
+  ],
+  "warnings": []
+}

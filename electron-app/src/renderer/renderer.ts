@@ -3,6 +3,7 @@ import type { OutputFormat, RunOptions, RunResponse } from "../shared/types.js";
 const form = document.getElementById("scan-form") as HTMLFormElement;
 const rootInput = document.getElementById("root-input") as HTMLInputElement;
 const outputInput = document.getElementById("output-input") as HTMLInputElement;
+const existingInput = document.getElementById("existing-input") as HTMLInputElement;
 const statusText = document.getElementById("status-text") as HTMLSpanElement;
 const resultsContainer = document.getElementById("results") as HTMLElement;
 
@@ -11,6 +12,9 @@ const browseRootButton = document.querySelector<HTMLButtonElement>(
 );
 const browseOutputButton = document.querySelector<HTMLButtonElement>(
   'button[data-action="select-output"]',
+);
+const browseExistingButton = document.querySelector<HTMLButtonElement>(
+  'button[data-action="select-existing"]',
 );
 
 let lastRunResponse: RunResponse | null = null;
@@ -33,10 +37,19 @@ browseOutputButton?.addEventListener("click", async () => {
   }
 });
 
+browseExistingButton?.addEventListener("click", async () => {
+  const existingPath = await window.shareAndTell.selectExistingFile();
+  if (existingPath) {
+    existingInput.value = existingPath;
+    setStatus("");
+  }
+});
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const rootPath = rootInput.value.trim();
   const outputPath = outputInput.value.trim();
+  const existingPath = existingInput.value.trim();
   const maxDepth = Number((document.getElementById("depth-input") as HTMLInputElement).value);
   const minFiles = Number((document.getElementById("files-input") as HTMLInputElement).value);
   const formats = collectFormats();
@@ -65,6 +78,7 @@ form.addEventListener("submit", async (event) => {
       minFiles: Number.isFinite(minFiles) ? minFiles : 3,
       formats,
       comments: {},
+      existingFilePath: existingPath || undefined,
     };
 
     const response = await window.shareAndTell.runScan(options);

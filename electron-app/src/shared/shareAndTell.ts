@@ -80,8 +80,67 @@ export async function scanDirectory({
   return { folders, warnings };
 }
 
+export async function loadExistingFile(filePath: string): Promise<CommentMap> {
+  try {
+    const content = await fs.promises.readFile(filePath, "utf-8");
+    const data = JSON.parse(content);
+
+    // Validate schema
+    if (typeof data !== "object" || data === null) {
+      throw new Error("Existing file must be a JSON object");
+    }
+
+    const requiredKeys = ["generated_at", "root", "max_depth", "min_files", "folders", "warnings"];
+    const missingKeys = requiredKeys.filter(key => !(key in data));
+    if (missingKeys.length > 0) {
+      throw new Error(`Existing file missing required keys: ${missingKeys.join(", ")}`);
+    }
+
+    if (!Array.isArray(data.folders)) {
+      throw new Error("Existing file 'folders' must be a list");
+    }
+
+    const comments: CommentMap = {};
+    for (const folder of data.folders) {
+      if (typeof folder !== "object" || folder === null) {
+        throw new Error("Each folder must be an object");
+      }
+      if (!("folder" in folder) || !("comment" in folder)) {
+        throw new Error("Each folder must have 'folder' and 'comment' keys");
+      }
+      const folderPath = folder.folder;
+      const comment = folder.comment;
+      if (typeof comment !== "string") {
+        throw new Error("Comment must be a string");
+      }
+      comments[folderPath] = comment;
+    }
+
+    return comments;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to load existing file: ${error.message}`);
+    }
+    throw error;
+  }
+}
+
 export async function runAndWrite(options: RunOptions): Promise<RunResponse> {
-  const result = await scanDirectory(options);
+  // Load existing comments if a file is specified
+  let comments = options.comments ?? {};
+  if (options.existingFilePath) {
+    const existingComments = await loadExistingFile(options.existingFilePath);
+    comments = { ...existingComments, ...comments };
+  }
+
+  const scanOptions: ScanOptions = {
+    rootPath: options.rootPath,
+    maxDepth: options.maxDepth,
+    minFiles: options.minFiles,
+    comments,
+  };
+
+  const result = await scanDirectory(scanOptions);
   const outputs: RunResponse["writtenFiles"] = {};
 
   const baseFile = basePathWithoutExtension(options.outputBasePath);

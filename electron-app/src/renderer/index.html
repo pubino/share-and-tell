@@ -29,6 +29,14 @@
             </div>
             <p class="help-text">The app will append .json, .html, and/or .csv depending on the selected formats.</p>
           </div>
+          <div class="form__group">
+            <label for="existing-input">Existing file (optional)</label>
+            <div class="input-group">
+              <input id="existing-input" name="existing" type="text" placeholder="Select existing JSON file to load comments" readonly />
+              <button type="button" data-action="select-existing" class="btn btn--secondary">Browse…</button>
+            </div>
+            <p class="help-text">Load comments from a previously generated JSON file to preserve existing annotations.</p>
+          </div>
           <div class="form__row">
             <div class="form__group">
               <label for="depth-input">Max depth</label>

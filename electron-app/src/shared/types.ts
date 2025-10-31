@@ -23,6 +23,7 @@ export interface ScanOptions {
 export interface RunOptions extends ScanOptions {
   formats: OutputFormat[];
   outputBasePath: string;
+  existingFilePath?: string;
 }
 
 export interface WrittenFiles {
@@ -39,6 +40,7 @@ export interface RunResponse {
 export interface RendererApi {
   selectRootDirectory(): Promise<string | undefined>;
   selectOutputFile(initialPath?: string): Promise<string | undefined>;
+  selectExistingFile(): Promise<string | undefined>;
   runScan(options: RunOptions): Promise<RunResponse>;
   openPath(targetPath: string): Promise<void>;
 }

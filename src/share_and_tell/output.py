@@ -71,7 +71,7 @@ def render_html(
             )
             if child_outline:
                 item_html += child_outline
-            item_html += "</li>'
+            item_html += "</li>"
             items.append(item_html)
         return "<ul>" + "".join(items) + "</ul>"
 
