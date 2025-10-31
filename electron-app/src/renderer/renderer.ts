@@ -120,7 +120,7 @@ function renderEmptyState(): void {
   const placeholder = document.createElement("div");
   placeholder.className = "results__empty";
   placeholder.innerHTML = `
-    <p class="results__warning">This app aggregates folder names, file counts, and comments about those folders. Please store and share the data with the appropriate level of protection or seek an audit if you are uncertain what level is necessary.</p>
+    <p class="results__warning">This app aggregates folder names, file counts, and comments. Please store and share this data with the appropriate level of protection.  Seek asssistance if you are uncertain what level is necessary.</p>
     <h2>Ready when you are</h2>
     <p>Select a folder to analyse, choose your output formats, and Share and Tell will do the rest.</p>
   `;

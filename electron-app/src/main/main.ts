@@ -90,9 +90,12 @@ function authenticateIpcHandlers(): void {
   ipcMain.handle("share-and-tell/select-existing", async (event: IpcMainInvokeEvent) => {
     const browserWindow = BrowserWindow.fromWebContents(event.sender);
     const openOptions: OpenDialogOptions = {
-      title: "Select existing JSON file to load comments from",
+      title: "Select existing file to load comments from",
       filters: [
+        { name: "Share and Tell files", extensions: ["json", "html", "csv"] },
         { name: "JSON files", extensions: ["json"] },
+        { name: "HTML files", extensions: ["html"] },
+        { name: "CSV files", extensions: ["csv"] },
         { name: "All files", extensions: ["*"] },
       ],
       properties: ["openFile"],
