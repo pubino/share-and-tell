@@ -32,10 +32,10 @@
           <div class="form__group">
             <label for="existing-input">Existing file (optional)</label>
             <div class="input-group">
-              <input id="existing-input" name="existing" type="text" placeholder="Select existing JSON file to load comments" readonly />
+              <input id="existing-input" name="existing" type="text" placeholder="Select existing file to load comments" readonly />
               <button type="button" data-action="select-existing" class="btn btn--secondary">Browse…</button>
             </div>
-            <p class="help-text">Load comments from a previously generated JSON file to preserve existing annotations.</p>
+            <p class="help-text">Load comments from a previously generated file (JSON, HTML, or CSV) to preserve existing annotations.</p>
           </div>
           <div class="form__row">
             <div class="form__group">
@@ -66,6 +66,10 @@
           </fieldset>
           <footer class="form__footer">
             <button type="submit" class="btn btn--primary">Generate report</button>
+            <div id="progress-container" class="progress-container" style="display: none;">
+              <div class="progress-spinner"></div>
+              <span>Scanning folder...</span>
+            </div>
             <span id="status-text" role="status" aria-live="polite"></span>
           </footer>
         </form>

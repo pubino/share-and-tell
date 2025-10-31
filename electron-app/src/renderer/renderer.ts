@@ -6,6 +6,7 @@ const outputInput = document.getElementById("output-input") as HTMLInputElement;
 const existingInput = document.getElementById("existing-input") as HTMLInputElement;
 const statusText = document.getElementById("status-text") as HTMLSpanElement;
 const resultsContainer = document.getElementById("results") as HTMLElement;
+const progressContainer = document.getElementById("progress-container") as HTMLElement;
 
 const browseRootButton = document.querySelector<HTMLButtonElement>(
   'button[data-action="select-root"]',
@@ -69,6 +70,7 @@ form.addEventListener("submit", async (event) => {
 
   try {
     disableForm(true);
+    showProgress();
     setStatus("Scanning…");
 
     const options: RunOptions = {
@@ -90,6 +92,7 @@ form.addEventListener("submit", async (event) => {
     setStatus(`Unable to generate the report: ${(error as Error).message}`);
   } finally {
     disableForm(false);
+    hideProgress();
   }
 });
 
@@ -113,6 +116,14 @@ function disableForm(state: boolean): void {
 
 function setStatus(message: string): void {
   statusText.textContent = message;
+}
+
+function showProgress(): void {
+  progressContainer.style.display = "flex";
+}
+
+function hideProgress(): void {
+  progressContainer.style.display = "none";
 }
 
 function renderEmptyState(): void {

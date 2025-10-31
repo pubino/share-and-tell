@@ -90,3 +90,27 @@ jobs:
           path: |
             electron-app/dist/*.exe
             electron-app/dist/*.zip
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [windows-x64-package, windows-arm64-package]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Windows x64 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-x64-packages
+          path: artifacts/windows-x64
+      - name: Download Windows ARM64 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-arm64-packages
+          path: artifacts/windows-arm64
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            artifacts/windows-x64/*
+            artifacts/windows-arm64/*
+          generate_release_notes: true
