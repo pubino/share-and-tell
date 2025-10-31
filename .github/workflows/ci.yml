@@ -44,7 +44,7 @@ jobs:
           node-version: "20"
       - name: Setup code signing
         run: |
-          [System.Convert]::FromBase64String("${{ secrets.WIN_CERT_PFX }}") | Set-Content -Path electron-app/cert.pfx -Encoding Byte
+          [System.Convert]::FromBase64String("${{ secrets.WIN_CERT_PFX }}") | Set-Content -Path electron-app/cert.pfx -AsByteStream
           echo "WIN_CERT_PASSWORD=${{ secrets.WIN_CERT_PASSWORD }}" >> $env:GITHUB_ENV
         shell: pwsh
       - name: Install dependencies
@@ -72,7 +72,7 @@ jobs:
           node-version: "20"
       - name: Setup code signing
         run: |
-          [System.Convert]::FromBase64String("${{ secrets.WIN_CERT_PFX }}") | Set-Content -Path electron-app/cert.pfx -Encoding Byte
+          [System.Convert]::FromBase64String("${{ secrets.WIN_CERT_PFX }}") | Set-Content -Path electron-app/cert.pfx -AsByteStream
           echo "WIN_CERT_PASSWORD=${{ secrets.WIN_CERT_PASSWORD }}" >> $env:GITHUB_ENV
         shell: pwsh
       - name: Install dependencies
