@@ -40,10 +40,10 @@ body {
 
 .app {
   display: grid;
-  grid-template-columns: minmax(360px, 420px) minmax(360px, 620px);
+  grid-template-columns: minmax(360px, 1fr) minmax(360px, 1.5fr);
   gap: 2.5rem;
   padding: 3rem clamp(2rem, 5vw, 4rem);
-  width: min(1200px, 100%);
+  width: 100%;
   height: 100vh;
   overflow-y: auto;
 }
