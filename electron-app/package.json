@@ -13,7 +13,7 @@
     "dev": "concurrently \"tsc --watch\" \"npm run dev-electron\"",
     "dev-electron": "wait-on dist/main/main.js dist/renderer/renderer.js dist/renderer/index.html && electron .",
     "lint": "tsc --noEmit",
-    "package": "npm run build && electron-builder"
+  "package": "npm run build && node ./scripts/check-dist.cjs && electron-builder"
   },
   "dependencies": {},
   "devDependencies": {
