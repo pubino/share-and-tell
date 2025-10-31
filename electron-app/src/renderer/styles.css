@@ -236,7 +236,7 @@ input[type="number"]:focus {
   gap: 1.25rem;
   overflow-y: auto;
   border: 1px solid var(--color-border);
-  min-width: 300px;
+  min-width: 360px;
 }
 
 .results__empty {
