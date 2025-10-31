@@ -25,3 +25,10 @@ htmlcov/
 # macOS
 .DS_Store
 orfe-share.html
+
+# Electron app
+electron-app/node_modules/
+electron-app/dist/
+electron-app/out/
+electron-app/release/
+electron-app/*.log

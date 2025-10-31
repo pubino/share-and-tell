@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Share and Tell Desktop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="panel" aria-labelledby="app-title">
+        <header class="panel__header">
+          <h1 id="app-title">Share and Tell</h1>
+          <p class="panel__tagline">Scan shared folders, annotate their purpose, and deliver polished reports.</p>
+        </header>
+        <form id="scan-form" class="form" autocomplete="off">
+          <div class="form__group">
+            <label for="root-input">Folder to analyse</label>
+            <div class="input-group">
+              <input id="root-input" name="root" type="text" placeholder="Select a folder" readonly />
+              <button type="button" data-action="select-root" class="btn btn--secondary">Browse…</button>
+            </div>
+          </div>
+          <div class="form__group">
+            <label for="output-input">Output file (base name)</label>
+            <div class="input-group">
+              <input id="output-input" name="output" type="text" placeholder="Choose where to save" readonly />
+              <button type="button" data-action="select-output" class="btn btn--secondary">Browse…</button>
+            </div>
+            <p class="help-text">The app will append .json, .html, and/or .csv depending on the selected formats.</p>
+          </div>
+          <div class="form__row">
+            <div class="form__group">
+              <label for="depth-input">Max depth</label>
+              <input id="depth-input" name="maxDepth" type="number" min="0" value="3" />
+            </div>
+            <div class="form__group">
+              <label for="files-input">Min files</label>
+              <input id="files-input" name="minFiles" type="number" min="0" value="3" />
+            </div>
+          </div>
+          <fieldset class="form__group">
+            <legend>Formats</legend>
+            <label class="checkbox">
+              <input type="checkbox" name="format" value="json" checked />
+              JSON
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="format" value="html" checked />
+              HTML
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="format" value="csv" />
+              CSV
+            </label>
+          </fieldset>
+          <footer class="form__footer">
+            <button type="submit" class="btn btn--primary">Generate report</button>
+            <span id="status-text" role="status" aria-live="polite"></span>
+          </footer>
+        </form>
+      </section>
+      <section class="results" id="results" aria-live="polite"></section>
+    </main>
+    <script type="module" src="renderer.js"></script>
+  </body>
+</html>

@@ -6,6 +6,7 @@
 - Rendering helpers in `src/share_and_tell/output.py` are responsible for JSON, HTML, and CSV serialisation.
 - The CLI entry point in `src/share_and_tell/cli.py` orchestrates argument parsing, scanning, and output.
 - Tests reside under `tests/` and use `pytest`.
+- The desktop client lives under `electron-app/` and mirrors the Python scanning/rendering logic in TypeScript for reuse across the Electron main and renderer processes.
 
 ## Coding Guidelines
 
@@ -29,3 +30,10 @@
 
 - The `Dockerfile` builds a minimal image using the Python 3.12 base.
 - `docker-compose.yml` demonstrates mounting a host directory at `/share` in read-only mode and exporting results to `/output`.
+
+## Electron Workflow
+
+- Install dependencies with `npm install` from inside `electron-app/`.
+- Run `npm run dev` for a live-reloading development session or `npm start` for a single build-and-launch cycle.
+- Shared logic resides in `electron-app/src/shared/` so the main process and renderer stay DRY.
+- Package distributions for Windows/macOS with `npm run package` (uses `electron-builder`).

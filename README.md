@@ -9,6 +9,7 @@ Share and Tell is a lightweight report generator that scans a file share, highli
 - Produce JSON, HTML, and CSV outputs with folder metadata and editable comment fields.
 - Optional pre-population of comments from a JSON mapping.
 - Docker image and `docker-compose` configuration for read-only execution against a shared path.
+- Cross-platform Electron desktop app with a polished UI for choosing folders, options, and export destinations.
 
 ## Quick Start
 
@@ -113,6 +114,23 @@ Edit `docker-compose.yml` to point to the correct host path.
 
 - **Windows (Docker Desktop / WSL 2):** Ensure the network share is mounted to a drive letter (for example `Z:`). When invoking Docker directly, map that drive into the container: `docker run --rm -v Z:/:/share:ro -v %cd%/reports:/output share-and-tell:local --format both --output /output /share`. If you launch the container from an Ubuntu WSL shell, reference the same drive through `/mnt/z` instead (`docker run --rm -v /mnt/z:/share:ro ...`). Confirm that Docker Desktop has access to the drive in *Settings → Resources → File Sharing*.
 - **macOS:** Mount the share (e.g. via Finder using *Go → Connect to Server*), which will appear under `/Volumes/<ShareName>`. Invoke Docker with `docker run --rm -v /Volumes/TeamShare:/share:ro -v "$(pwd)/reports":/output share-and-tell:local --format both --output /output /share`. Adjust the `/Volumes/...` path to match the mounted volume name and ensure the share is mounted before running the container.
+
+## Electron Desktop App
+
+The `electron-app/` directory bundles Share and Tell as a native-feeling desktop app for Windows and macOS. It wraps the same traversal and rendering logic in a UI that lets you pick the source folder, tweak thresholds, choose output formats, and name the exported files.
+
+```bash
+cd electron-app
+npm install
+npm run dev      # watches TypeScript and relaunches Electron
+# or
+npm start        # one-shot build followed by Electron
+
+# Build signed installers (macOS dmg, Windows nsis)
+npm run package
+```
+
+When prompted for the output location, choose a base name (for example `~/Desktop/share-report`). The app will append `.json`, `.html`, and/or `.csv` depending on the formats you select.
 
 ## Development
 
