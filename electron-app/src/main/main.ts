@@ -1,5 +1,10 @@
 import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
-import type { IpcMainInvokeEvent, IpcMainEvent } from "electron";
+import type {
+  IpcMainInvokeEvent,
+  IpcMainEvent,
+  OpenDialogOptions,
+  SaveDialogOptions,
+} from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 import { runAndWrite } from "../shared/shareAndTell.js";
@@ -46,11 +51,15 @@ app.on("activate", async () => {
 });
 
 function authenticateIpcHandlers(): void {
-  ipcMain.handle("share-and-tell/select-root", async () => {
-    const result = await dialog.showOpenDialog({
+  ipcMain.handle("share-and-tell/select-root", async (event: IpcMainInvokeEvent) => {
+    const browserWindow = BrowserWindow.fromWebContents(event.sender);
+    const dialogOptions: OpenDialogOptions = {
       properties: ["openDirectory"],
       title: "Select the folder to scan",
-    });
+    };
+    const result = browserWindow
+      ? await dialog.showOpenDialog(browserWindow, dialogOptions)
+      : await dialog.showOpenDialog(dialogOptions);
     if (result.canceled || result.filePaths.length === 0) {
       return undefined;
     }
@@ -58,16 +67,20 @@ function authenticateIpcHandlers(): void {
   });
 
   ipcMain.handle("share-and-tell/select-output", async (
-    _event: IpcMainInvokeEvent,
+    event: IpcMainInvokeEvent,
     initialPath?: string,
   ) => {
-    const result = await dialog.showSaveDialog({
+    const browserWindow = BrowserWindow.fromWebContents(event.sender);
+    const saveOptions: SaveDialogOptions = {
       title: "Choose the base file name for the report",
       defaultPath: initialPath,
       filters: [
         { name: "All formats", extensions: ["json", "html", "csv"] },
       ],
-    });
+    };
+    const result = browserWindow
+      ? await dialog.showSaveDialog(browserWindow, saveOptions)
+      : await dialog.showSaveDialog(saveOptions);
     if (result.canceled || !result.filePath) {
       return undefined;
     }
