@@ -140,6 +140,23 @@ When prompted for the output location, choose a base name (for example `~/Deskto
 - Track outstanding work in `TODO.md`.
 - Electron desktop build scripts are mirrored at the repository root: `npm run build`, `npm run lint`, or `npm run start` (requires the Node.js environment described in `environment.yml`).
 
+### Packaging the Electron App
+
+1. Create the toolchain: `conda env create -f environment.yml` and `conda activate share-and-tell-dev`.
+2. Install Electron dependencies: `npm install --prefix electron-app`.
+3. Build distributables: `npm run package`.
+    - On macOS the command produces a DMG at `electron-app/dist/share-and-tell-electron-<version>-arm64.dmg` (and its `.blockmap`).
+    - On Windows run the same command from a Windows shell to generate the NSIS installer at `electron-app/dist/share-and-tell-electron Setup <version>.exe`. (Cross-building NSIS on macOS requires Wine; easiest is to package on Windows.)
+4. Share the generated artefacts in `electron-app/dist/` as needed.
+
+Example macOS build (executed via `npm run package`):
+
+```
+$ npm run package
+... electron-builder  version=24.13.3 os=25.0.0
+... building target=DMG arch=arm64 file=dist/share-and-tell-electron-0.1.0-arm64.dmg
+```
+
 ## License
 
 Released under the MIT License © Princeton University.

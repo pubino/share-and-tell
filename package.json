@@ -6,6 +6,7 @@
     "build": "npm --prefix electron-app run build",
     "lint": "npm --prefix electron-app run lint",
     "start": "npm --prefix electron-app run start",
-    "dev": "npm --prefix electron-app run dev"
+    "dev": "npm --prefix electron-app run dev",
+    "package": "npm --prefix electron-app run package"
   }
 }

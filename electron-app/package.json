@@ -15,10 +15,9 @@
     "lint": "tsc --noEmit",
     "package": "npm run build && electron-builder"
   },
-  "dependencies": {
-    "electron": "^30.0.6"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "electron": "^30.0.6",
     "@types/node": "^20.14.12",
     "concurrently": "^8.2.2",
     "copyfiles": "^2.4.1",

@@ -37,3 +37,9 @@
 - Run `npm run dev` for a live-reloading development session or `npm start` for a single build-and-launch cycle.
 - Shared logic resides in `electron-app/src/shared/` so the main process and renderer stay DRY.
 - Package distributions for Windows/macOS with `npm run package` (uses `electron-builder`).
+
+### Packaging Notes
+
+- macOS DMG output is written to `electron-app/dist/share-and-tell-electron-<version>-arm64.dmg`.
+- Windows NSIS output is written to `electron-app/dist/share-and-tell-electron Setup <version>.exe`; build on Windows or install Wine when cross-compiling from macOS.
+- The app currently uses the default Electron icon; provide a `.icns`/`.ico` pair and update the Electron builder config when branding is ready.
