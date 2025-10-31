@@ -5,10 +5,10 @@
   "author": "Princeton University",
   "license": "MIT",
   "type": "module",
-  "main": "dist/main/main.js",
+  "main": "main/main.js",
   "scripts": {
     "clean": "rimraf dist",
-  "build": "npm run clean && tsc && copyfiles -u 1 \"src/renderer/**/*.{html,css}\" \"src/main/preload.js\" dist",
+    "build": "npm run clean && tsc && copyfiles -u 1 \"src/renderer/**/*.{html,css}\" \"src/main/preload.js\" dist",
     "start": "npm run build && electron .",
     "dev": "concurrently \"tsc --watch\" \"npm run dev-electron\"",
     "dev-electron": "wait-on dist/main/main.js dist/renderer/renderer.js dist/renderer/index.html && electron .",
@@ -29,9 +29,15 @@
   "build": {
     "appId": "edu.princeton.shareandtell",
     "files": [
-      "dist/**/*",
+      {
+        "from": "dist",
+        "to": "."
+      },
       "package.json"
     ],
+    "extraMetadata": {
+      "main": "main/main.js"
+    },
     "mac": {
       "category": "public.app-category.productivity",
       "target": ["dmg"]
