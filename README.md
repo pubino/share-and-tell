@@ -7,7 +7,8 @@ Share and Tell is a lightweight report generator that scans a file share, highli
 - Traverse a directory tree up to a configurable depth (default `3`).
 - Record folders that meet a configurable importance threshold measured by the number of files (default `3`).
 - Produce JSON, HTML, and CSV outputs with folder metadata and editable comment fields.
-- Optional pre-population of comments from a JSON mapping.
+- Optional pre-population of comments from a JSON mapping or existing output files.
+- Preserve comments from previous scans when regenerating reports.
 - Docker image and `docker-compose` configuration for read-only execution against a shared path.
 - Cross-platform Electron desktop app with a polished UI for choosing folders, options, and export destinations.
 
@@ -24,7 +25,7 @@ share-and-tell /path/to/share --format html --output report.html
 
 ```bash
 share-and-tell ROOT [--max-depth N] [--min-files N] [--format json|html|both]
-                    [--output PATH] [--comments-file JSON]
+                    [--output PATH] [--comments-file JSON] [--existing JSON]
 ```
 
 - `ROOT`: Root directory to analyse (UNC paths such as `\\\\server\\share` are supported).
@@ -33,6 +34,7 @@ share-and-tell ROOT [--max-depth N] [--min-files N] [--format json|html|both]
 - `--format`: `json`, `html`, `csv`, `both` (json + html), or `all` (json + html + csv); defaults to `json`.
 - `--output`: Destination file (or directory for `both`/`all`).
 - `--comments-file`: Path to a JSON mapping of folder paths to comments.
+- `--existing`: Path to an existing JSON output file to load and preserve comments from.
 
 When running with `--format both`, supply `--output` with a directory path; the command will write `share-and-tell.json` and `share-and-tell.html` inside that directory.
 
