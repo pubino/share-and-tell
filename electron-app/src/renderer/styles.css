@@ -39,16 +39,16 @@ body {
 }
 
 .app {
-  display: grid;
-  grid-template-columns: minmax(360px, 1fr) minmax(360px, 1.5fr);
+  display: flex;
+  flex-direction: row;
   gap: 2.5rem;
-  padding: 3rem clamp(2rem, 5vw, 4rem);
-  width: 100%;
-  height: 100vh;
-  overflow-y: auto;
+  padding: 3rem;
+  height: calc(100vh - 6rem);
+  overflow: hidden;
 }
 
 .panel {
+  flex: 0 0 420px;
   background: var(--color-panel);
   border-radius: var(--radius-large);
   padding: 2.4rem;
@@ -56,6 +56,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
+  overflow-y: auto;
 }
 
 .panel__header h1 {
@@ -190,6 +191,7 @@ input[type="number"]:focus {
 }
 
 .results {
+  flex: 1;
   background: rgba(255, 255, 255, 0.78);
   border-radius: var(--radius-large);
   box-shadow: var(--shadow-soft);
@@ -289,10 +291,16 @@ input[type="number"]:focus {
 
 @media (max-width: 1080px) {
   .app {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .panel {
+    flex: 0 0 auto;
   }
 
   .results {
+    flex: 1;
     min-height: 220px;
   }
 }
