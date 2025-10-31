@@ -1,0 +1,11 @@
+{
+  "name": "share-and-tell-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "npm --prefix electron-app run build",
+    "lint": "npm --prefix electron-app run lint",
+    "start": "npm --prefix electron-app run start",
+    "dev": "npm --prefix electron-app run dev"
+  }
+}

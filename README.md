@@ -138,6 +138,7 @@ When prompted for the output location, choose a base name (for example `~/Deskto
 - Run tests: `pytest`.
 - Additional notes for contributors are in `docs/developer-notes.md`.
 - Track outstanding work in `TODO.md`.
+- Electron desktop build scripts are mirrored at the repository root: `npm run build`, `npm run lint`, or `npm run start` (requires the Node.js environment described in `environment.yml`).
 
 ## License
 
