@@ -43,10 +43,16 @@ jobs:
         with:
           node-version: "20"
       - name: Setup code signing
-        if: ${{ secrets.WIN_CERT_PFX != '' && secrets.WIN_CERT_PASSWORD != '' }}
         run: |
-          [System.Convert]::FromBase64String("${{ secrets.WIN_CERT_PFX }}") | Set-Content -Path electron-app/cert.pfx -AsByteStream
-          echo "WIN_CERT_PASSWORD=${{ secrets.WIN_CERT_PASSWORD }}" >> $env:GITHUB_ENV
+          if ("${{ secrets.WIN_CERT_PFX }}" -ne "" -and "${{ secrets.WIN_CERT_PASSWORD }}" -ne "") {
+            Write-Host "Setting up code signing..."
+            [System.Convert]::FromBase64String("${{ secrets.WIN_CERT_PFX }}") | Set-Content -Path electron-app/cert.pfx -AsByteStream
+            echo "WIN_CERT_PASSWORD=${{ secrets.WIN_CERT_PASSWORD }}" >> $env:GITHUB_ENV
+            echo "HAS_CERT=true" >> $env:GITHUB_ENV
+          } else {
+            Write-Host "Code signing certificates not available, building unsigned..."
+            echo "HAS_CERT=false" >> $env:GITHUB_ENV
+          }
         shell: pwsh
       - name: Install dependencies
         run: |
@@ -55,7 +61,7 @@ jobs:
       - name: Build and package
         run: |
           cd electron-app
-          if (Test-Path cert.pfx) {
+          if ($env:HAS_CERT -eq "true") {
             Write-Host "Certificate found, building with signing..."
             npm run package
           } else {
@@ -79,10 +85,16 @@ jobs:
         with:
           node-version: "20"
       - name: Setup code signing
-        if: ${{ secrets.WIN_CERT_PFX != '' && secrets.WIN_CERT_PASSWORD != '' }}
         run: |
-          [System.Convert]::FromBase64String("${{ secrets.WIN_CERT_PFX }}") | Set-Content -Path electron-app/cert.pfx -AsByteStream
-          echo "WIN_CERT_PASSWORD=${{ secrets.WIN_CERT_PASSWORD }}" >> $env:GITHUB_ENV
+          if ("${{ secrets.WIN_CERT_PFX }}" -ne "" -and "${{ secrets.WIN_CERT_PASSWORD }}" -ne "") {
+            Write-Host "Setting up code signing..."
+            [System.Convert]::FromBase64String("${{ secrets.WIN_CERT_PFX }}") | Set-Content -Path electron-app/cert.pfx -AsByteStream
+            echo "WIN_CERT_PASSWORD=${{ secrets.WIN_CERT_PASSWORD }}" >> $env:GITHUB_ENV
+            echo "HAS_CERT=true" >> $env:GITHUB_ENV
+          } else {
+            Write-Host "Code signing certificates not available, building unsigned..."
+            echo "HAS_CERT=false" >> $env:GITHUB_ENV
+          }
         shell: pwsh
       - name: Install dependencies
         run: |
@@ -91,7 +103,7 @@ jobs:
       - name: Build and package
         run: |
           cd electron-app
-          if (Test-Path cert.pfx) {
+          if ($env:HAS_CERT -eq "true") {
             Write-Host "Certificate found, building with signing..."
             npm run package
           } else {
