@@ -215,6 +215,13 @@ input[type="number"]:focus {
   font-size: 0.95rem;
 }
 
+.results__warning {
+  margin: 0 0 1rem 0;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
 .result-card {
   background: linear-gradient(135deg, rgba(79, 115, 255, 0.16), rgba(38, 145, 226, 0.12));
   padding: 1.25rem;
