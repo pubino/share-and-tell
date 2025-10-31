@@ -37,7 +37,8 @@
       "target": ["dmg"]
     },
     "win": {
-      "target": ["nsis"]
+      "target": ["nsis", "portable"],
+      "requestedExecutionLevel": "asInvoker"
     }
   }
 }

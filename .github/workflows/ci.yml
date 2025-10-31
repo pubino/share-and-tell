@@ -34,3 +34,49 @@ jobs:
         run: |
           cd electron-app
           npm run lint
+
+  windows-x64-package:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: |
+          cd electron-app
+          npm install
+      - name: Build and package
+        run: |
+          cd electron-app
+          npm run package
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-x64-packages
+          path: |
+            electron-app/dist/*.exe
+            electron-app/dist/*.zip
+
+  windows-arm64-package:
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: |
+          cd electron-app
+          npm install
+      - name: Build and package
+        run: |
+          cd electron-app
+          npm run package
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-arm64-packages
+          path: |
+            electron-app/dist/*.exe
+            electron-app/dist/*.zip

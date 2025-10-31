@@ -43,3 +43,5 @@
 - macOS DMG output is written to `electron-app/dist/share-and-tell-electron-<version>-arm64.dmg`.
 - Windows NSIS output is written to `electron-app/dist/share-and-tell-electron Setup <version>.exe`; build on Windows or install Wine when cross-compiling from macOS.
 - The app currently uses the default Electron icon; provide a `.icns`/`.ico` pair and update the Electron builder config when branding is ready.
+- For macOS signing, download a *Developer ID Application* certificate from the Apple Developer portal (or via Xcode → Settings → Accounts → Manage Certificates) and import it into your login Keychain. Once present, either set `CSC_IDENTITY_AUTO_DISCOVERY=true` or export the certificate as `DeveloperIDApplication.p12` and point `CSC_LINK`/`CSC_KEY_PASSWORD` to it when running `npm run package`.
+- To notarise, supply your Apple ID credentials and issuer information via `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, and `ASC_PROVIDER`. Electron Builder automatically submits the DMG for notarisation when those variables are set.
