@@ -41,9 +41,7 @@ app.whenReady().then(createWindow).catch((error: unknown) => {
 });
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
+  app.quit();
 });
 
 app.on("activate", async () => {

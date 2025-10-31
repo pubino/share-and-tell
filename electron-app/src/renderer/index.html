@@ -39,20 +39,22 @@
               <input id="files-input" name="minFiles" type="number" min="0" value="3" />
             </div>
           </div>
-          <fieldset class="form__group">
+          <fieldset>
             <legend>Formats</legend>
-            <label class="checkbox">
-              <input type="checkbox" name="format" value="json" checked />
-              JSON
-            </label>
-            <label class="checkbox">
-              <input type="checkbox" name="format" value="html" checked />
-              HTML
-            </label>
-            <label class="checkbox">
-              <input type="checkbox" name="format" value="csv" />
-              CSV
-            </label>
+            <div class="formats">
+              <label class="checkbox">
+                <input type="checkbox" name="format" value="json" checked />
+                JSON
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" name="format" value="html" checked />
+                HTML
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" name="format" value="csv" />
+                CSV
+              </label>
+            </div>
           </fieldset>
           <footer class="form__footer">
             <button type="submit" class="btn btn--primary">Generate report</button>
