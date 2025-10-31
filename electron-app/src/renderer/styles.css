@@ -50,6 +50,7 @@ body {
 .panel {
   flex: 0 0 auto;
   min-width: 360px;
+  max-width: 420px;
   background: var(--color-panel);
   border-radius: var(--radius-large);
   padding: 1.5rem;
