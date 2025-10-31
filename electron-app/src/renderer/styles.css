@@ -216,8 +216,11 @@ input[type="number"]:focus {
 }
 
 .results__warning {
+  background: rgba(220, 53, 69, 0.1);
+  border-left: 3px solid #dc3545;
+  padding: 0.5rem 0.8rem;
   margin: 0 0 1rem 0;
-  color: var(--color-muted);
+  color: #8d1c28;
   font-size: 0.8rem;
   line-height: 1.3;
 }
