@@ -2,7 +2,7 @@ import csv
 import io
 from pathlib import Path
 
-from share_and_tell.output import render_csv
+from share_and_tell.output import render_csv, _escape
 from share_and_tell.scanner import scan_directory
 
 
@@ -28,3 +28,9 @@ def test_render_csv_orders_rows_by_folder_name(tmp_path: Path) -> None:
     assert rows[1][0] == "."
     assert rows[2][0] == "Course Offerings"
     assert rows[3][0] == "Course Offerings/1_FacultyRequests_2025"
+
+
+def test_escape_html():
+    assert _escape("<script>alert('xss')</script>") == "&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;"
+    assert _escape('"quoted"') == "&quot;quoted&quot;"
+    assert _escape("normal text") == "normal text"

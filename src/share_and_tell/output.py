@@ -6,6 +6,7 @@ import io
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Tuple
+import html
 
 from .scanner import FolderInfo, ScanResult
 
@@ -70,7 +71,7 @@ def render_html(
             )
             if child_outline:
                 item_html += child_outline
-            item_html += "</li>"
+            item_html += "</li>'
             items.append(item_html)
         return "<ul>" + "".join(items) + "</ul>"
 
@@ -166,13 +167,7 @@ def render_html(
 
 
 def _escape(value: str) -> str:
-    return (
-        value.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
-        .replace("'", "&#x27;")
-    )
+    return html.escape(value, quote=True)
 
 
 def render_csv(
