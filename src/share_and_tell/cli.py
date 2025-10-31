@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Dict
 
 from .output import render_csv, render_html, render_json
-from .scanner import scan_directory
+from .cancellable_scanner import scan_directory_with_retry, ScanCancelledException
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -63,6 +63,18 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "Optional path to an existing JSON output file to load comments from. "
             "Comments will be preserved and matched by folder path."
         ),
+    )
+    parser.add_argument(
+        "--max-retries",
+        type=int,
+        default=3,
+        help="Maximum retry attempts for failed directory access (default: 3)",
+    )
+    parser.add_argument(
+        "--retry-delay",
+        type=float,
+        default=0.1,
+        help="Base delay between retries in seconds (default: 0.1)",
     )
     return parser.parse_args(argv)
 
@@ -137,12 +149,32 @@ def main(argv: list[str] | None = None) -> int:
     if args.existing:
         existing_comments = load_existing(args.existing)
         comments = {**existing_comments, **comments}
-    result = scan_directory(
-        root_path,
-        max_depth=args.max_depth,
-        min_files=args.min_files,
-        comments=comments,
-    )
+
+    def progress_callback(progress):
+        """Print progress information."""
+        print(f"\rScanned: {progress.directories_scanned} dirs, "
+              f"{progress.folders_processed} folders, "
+              f"{progress.total_files_found} files, "
+              f"{progress.warnings_count} warnings, "
+              f"{progress.retry_count} retries", end="", flush=True)
+
+    try:
+        result = scan_directory_with_retry(
+            root_path,
+            max_depth=args.max_depth,
+            min_files=args.min_files,
+            comments=comments,
+            max_retries=args.max_retries,
+            progress_callback=progress_callback,
+        )
+        print()  # New line after progress output
+
+    except ScanCancelledException:
+        print("\nScan cancelled by user")
+        return
+    except KeyboardInterrupt:
+        print("\nScan cancelled by user")
+        return
 
     json_output = render_json(result, root_path, args.max_depth, args.min_files)
     html_output = render_html(result, root_path, args.max_depth, args.min_files)

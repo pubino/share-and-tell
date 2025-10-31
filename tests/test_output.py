@@ -142,3 +142,41 @@ def test_render_html_empty_result(tmp_path: Path) -> None:
     # Root directory should be shown in outline view since it exists
     # but the table should be empty or only show root if it meets criteria
     assert "outline-root" in html_output
+
+
+def test_cancellable_scanner_basic(tmp_path: Path) -> None:
+    """Test basic functionality of cancellable scanner."""
+    from share_and_tell.cancellable_scanner import CancellableDirectoryScanner, ScanConfig
+    
+    config = ScanConfig(min_files=1)
+    scanner = CancellableDirectoryScanner(config)
+    
+    # Create a test directory
+    test_dir = tmp_path / "basic_test"
+    test_dir.mkdir()
+    (test_dir / "file.txt").write_text("content")
+    
+    result = scanner.scan_directory(test_dir)
+    
+    # Should find the directory
+    assert len(result.folders) >= 1
+    assert result.folders[0].file_count >= 1
+
+
+def test_cancellable_scanner_cancellation(tmp_path: Path) -> None:
+    """Test that scanner can be cancelled."""
+    from share_and_tell.cancellable_scanner import CancellableDirectoryScanner, ScanConfig, ScanCancelledException
+    
+    config = ScanConfig()
+    scanner = CancellableDirectoryScanner(config)
+    
+    # Test that cancel sets the event
+    scanner.cancel()
+    assert scanner.is_cancelled()
+    
+    # Test that _check_cancelled raises exception
+    try:
+        scanner._check_cancelled()
+        assert False, "Should have raised ScanCancelledException"
+    except ScanCancelledException:
+        pass  # Expected

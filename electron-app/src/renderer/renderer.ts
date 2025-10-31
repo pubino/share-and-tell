@@ -17,8 +17,10 @@ const browseOutputButton = document.querySelector<HTMLButtonElement>(
 const browseExistingButton = document.querySelector<HTMLButtonElement>(
   'button[data-action="select-existing"]',
 );
+const cancelButton = document.getElementById("cancel-button") as HTMLButtonElement;
 
 let lastRunResponse: RunResponse | null = null;
+let currentAbortController: AbortController | null = null;
 
 renderEmptyState();
 
@@ -71,7 +73,10 @@ form.addEventListener("submit", async (event) => {
   try {
     disableForm(true);
     showProgress();
+    showCancelButton();
     setStatus("Scanning…");
+
+    currentAbortController = new AbortController();
 
     const options: RunOptions = {
       rootPath,
@@ -81,6 +86,7 @@ form.addEventListener("submit", async (event) => {
       formats,
       comments: {},
       existingFilePath: existingPath || undefined,
+      signal: currentAbortController.signal,
     };
 
     const response = await window.shareAndTell.runScan(options);
@@ -88,11 +94,25 @@ form.addEventListener("submit", async (event) => {
     renderSuccess(response);
     setStatus("Report generated successfully.");
   } catch (error) {
-    console.error(error);
-    setStatus(`Unable to generate the report: ${(error as Error).message}`);
+    const err = error as Error;
+    if (err.name === "AbortError" || err.message.includes("cancelled")) {
+      setStatus("Scan cancelled.");
+    } else {
+      console.error(error);
+      setStatus(`Unable to generate the report: ${err.message}`);
+    }
   } finally {
     disableForm(false);
     hideProgress();
+    hideCancelButton();
+    currentAbortController = null;
+  }
+});
+
+cancelButton.addEventListener("click", () => {
+  if (currentAbortController) {
+    currentAbortController.abort();
+    setStatus("Cancelling scan...");
   }
 });
 
@@ -124,6 +144,14 @@ function showProgress(): void {
 
 function hideProgress(): void {
   progressContainer.style.display = "none";
+}
+
+function showCancelButton(): void {
+  cancelButton.style.display = "inline-block";
+}
+
+function hideCancelButton(): void {
+  cancelButton.style.display = "none";
 }
 
 function renderEmptyState(): void {

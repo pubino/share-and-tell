@@ -18,12 +18,26 @@ export interface ScanOptions {
   maxDepth: number;
   minFiles: number;
   comments?: Record<string, string>;
+  maxRetries?: number;
+  retryDelay?: number;
+  onProgress?: (progress: ScanProgress) => void;
+  signal?: AbortSignal;
+}
+
+export interface ScanProgress {
+  foldersProcessed: number;
+  directoriesScanned: number;
+  totalFilesFound: number;
+  currentPath?: string;
+  warningsCount: number;
+  retryCount: number;
 }
 
 export interface RunOptions extends ScanOptions {
   formats: OutputFormat[];
   outputBasePath: string;
   existingFilePath?: string;
+  signal?: AbortSignal;
 }
 
 export interface WrittenFiles {

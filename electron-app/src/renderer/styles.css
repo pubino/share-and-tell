@@ -219,6 +219,22 @@ input[type="number"]:focus {
   gap: 0.4rem;
 }
 
+.scan-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.scan-controls .progress-container {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.scan-controls .btn {
+  flex-shrink: 0;
+}
+
 #status-text {
   min-height: 1rem;
   color: var(--color-muted);

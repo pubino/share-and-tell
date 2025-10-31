@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { FolderInfo, RunOptions, RunResponse, ScanOptions, ScanResult } from "./types.js";
+import { FolderInfo, RunOptions, RunResponse, ScanOptions, ScanResult, ScanProgress } from "./types.js";
 
 const { readdir, writeFile, realpath, mkdir } = fs.promises;
 
@@ -33,11 +33,51 @@ function basePathWithoutExtension(filePath: string): string {
   return filePath.replace(/\.[^.]+$/, "");
 }
 
+async function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function retryOperation<T>(
+  operation: () => Promise<T>,
+  maxRetries: number,
+  retryDelay: number,
+  signal?: AbortSignal
+): Promise<T> {
+  let lastError: Error;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    if (signal?.aborted) {
+      throw new Error("Operation cancelled");
+    }
+
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error as Error;
+
+      // Don't retry on the last attempt
+      if (attempt === maxRetries) {
+        break;
+      }
+
+      // Exponential backoff
+      const delay = retryDelay * Math.pow(2, attempt);
+      await sleep(delay);
+    }
+  }
+
+  throw lastError!;
+}
+
 export async function scanDirectory({
   rootPath,
   maxDepth,
   minFiles,
   comments,
+  maxRetries = 3,
+  retryDelay = 100,
+  onProgress,
+  signal,
 }: ScanOptions): Promise<ScanResult> {
   if (maxDepth < 0) {
     throw new Error("maxDepth must be zero or greater");
@@ -52,9 +92,22 @@ export async function scanDirectory({
   const folders: FolderInfo[] = [];
   const warnings: string[] = [];
 
+  const progress: ScanProgress = {
+    foldersProcessed: 0,
+    directoriesScanned: 0,
+    totalFilesFound: 0,
+    warningsCount: 0,
+    retryCount: 0,
+  };
+
   const stack: DirectoryFrame[] = [{ dirPath: resolvedRoot, depth: 0 }];
 
   while (stack.length > 0) {
+    // Check for cancellation
+    if (signal?.aborted) {
+      throw new Error("Scan cancelled");
+    }
+
     const frame = stack.pop();
     if (!frame) {
       continue;
@@ -67,13 +120,27 @@ export async function scanDirectory({
 
     let dirEntries: fs.Dirent[];
     try {
-      dirEntries = await readdir(dirPath, { withFileTypes: true });
+      dirEntries = await retryOperation(
+        () => readdir(dirPath, { withFileTypes: true }),
+        maxRetries,
+        retryDelay,
+        signal
+      );
     } catch (error) {
+      if (signal?.aborted) {
+        throw new Error("Scan cancelled");
+      }
       warnings.push(`Skipped ${dirPath}: ${(error as Error).message}`);
+      progress.warningsCount++;
       continue;
     }
 
+    progress.directoriesScanned++;
+    progress.currentPath = dirPath;
+
     const fileCount = dirEntries.filter((entry) => entry.isFile()).length;
+    progress.totalFilesFound += fileCount;
+
     if (depth === 0 || fileCount >= minFiles) {
       const comment = commentMap[dirPath] ?? "";
       folders.push({
@@ -83,6 +150,7 @@ export async function scanDirectory({
         fileCount,
         comment,
       });
+      progress.foldersProcessed++;
     }
 
     const childDirectories = dirEntries
@@ -92,6 +160,11 @@ export async function scanDirectory({
 
     for (let index = childDirectories.length - 1; index >= 0; index -= 1) {
       stack.push({ dirPath: childDirectories[index]!, depth: depth + 1 });
+    }
+
+    // Report progress
+    if (onProgress) {
+      onProgress({ ...progress });
     }
   }
 
@@ -251,6 +324,10 @@ export async function runAndWrite(options: RunOptions): Promise<RunResponse> {
     maxDepth: options.maxDepth,
     minFiles: options.minFiles,
     comments,
+    maxRetries: options.maxRetries,
+    retryDelay: options.retryDelay,
+    onProgress: options.onProgress,
+    signal: options.signal,
   };
 
   const result = await scanDirectory(scanOptions);
