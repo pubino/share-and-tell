@@ -29,10 +29,7 @@
   "build": {
     "appId": "edu.princeton.shareandtell",
     "files": [
-      {
-        "from": "dist",
-        "to": "."
-      },
+      "dist/**/*",
       "package.json"
     ],
     "extraMetadata": {
