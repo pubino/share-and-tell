@@ -38,10 +38,7 @@
     },
     "win": {
       "target": ["nsis", "portable"],
-      "requestedExecutionLevel": "asInvoker",
-      "certificateFile": "cert.pfx",
-      "certificatePassword": "${WIN_CERT_PASSWORD}",
-      "rfc3161TimeStampServer": "http://timestamp.digicert.com"
+      "requestedExecutionLevel": "asInvoker"
     }
   }
 }

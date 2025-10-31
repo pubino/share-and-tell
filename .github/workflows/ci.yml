@@ -43,6 +43,7 @@ jobs:
         with:
           node-version: "20"
       - name: Setup code signing
+        if: ${{ secrets.WIN_CERT_PFX != '' && secrets.WIN_CERT_PASSWORD != '' }}
         run: |
           [System.Convert]::FromBase64String("${{ secrets.WIN_CERT_PFX }}") | Set-Content -Path electron-app/cert.pfx -AsByteStream
           echo "WIN_CERT_PASSWORD=${{ secrets.WIN_CERT_PASSWORD }}" >> $env:GITHUB_ENV
@@ -54,7 +55,14 @@ jobs:
       - name: Build and package
         run: |
           cd electron-app
-          npm run package
+          if (Test-Path cert.pfx) {
+            Write-Host "Certificate found, building with signing..."
+            npm run package
+          } else {
+            Write-Host "No certificate found, building unsigned..."
+            npx electron-builder --win --publish=never
+          }
+        shell: pwsh
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -71,6 +79,7 @@ jobs:
         with:
           node-version: "20"
       - name: Setup code signing
+        if: ${{ secrets.WIN_CERT_PFX != '' && secrets.WIN_CERT_PASSWORD != '' }}
         run: |
           [System.Convert]::FromBase64String("${{ secrets.WIN_CERT_PFX }}") | Set-Content -Path electron-app/cert.pfx -AsByteStream
           echo "WIN_CERT_PASSWORD=${{ secrets.WIN_CERT_PASSWORD }}" >> $env:GITHUB_ENV
@@ -82,7 +91,14 @@ jobs:
       - name: Build and package
         run: |
           cd electron-app
-          npm run package
+          if (Test-Path cert.pfx) {
+            Write-Host "Certificate found, building with signing..."
+            npm run package
+          } else {
+            Write-Host "No certificate found, building unsigned..."
+            npx electron-builder --win --publish=never
+          }
+        shell: pwsh
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
