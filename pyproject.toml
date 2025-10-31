@@ -15,5 +15,10 @@ dependencies = []
 [project.optional-dependencies]
 test = ["pytest>=7"]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q"
+norecursedirs = ["performance"]
+
 [project.scripts]
 share-and-tell = "share_and_tell.cli:main"
