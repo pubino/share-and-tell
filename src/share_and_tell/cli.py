@@ -56,6 +56,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "the output."
         ),
     )
+    parser.add_argument(
+        "--existing",
+        type=Path,
+        help=(
+            "Optional path to an existing JSON output file to load comments from. "
+            "Comments will be preserved and matched by folder path."
+        ),
+    )
     return parser.parse_args(argv)
 
 
@@ -81,6 +89,42 @@ def load_comments(path: Path | None) -> Dict[str, str]:
     return normalised
 
 
+def load_existing(path: Path | None) -> Dict[str, str]:
+    if path is None:
+        return {}
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            data = json.load(handle)
+    except FileNotFoundError:
+        raise SystemExit(f"Existing file not found: {path}") from None
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"Failed to parse existing file {path}: {exc}") from None
+
+    # Validate schema
+    if not isinstance(data, dict):
+        raise SystemExit("Existing file must be a JSON object")
+    required_keys = {"generated_at", "root", "max_depth", "min_files", "folders", "warnings"}
+    if not required_keys.issubset(data.keys()):
+        raise SystemExit(f"Existing file missing required keys: {required_keys - set(data.keys())}")
+
+    if not isinstance(data["folders"], list):
+        raise SystemExit("Existing file 'folders' must be a list")
+
+    comments: Dict[str, str] = {}
+    for folder in data["folders"]:
+        if not isinstance(folder, dict):
+            raise SystemExit("Each folder must be an object")
+        if "folder" not in folder or "comment" not in folder:
+            raise SystemExit("Each folder must have 'folder' and 'comment' keys")
+        folder_path = folder["folder"]
+        comment = folder["comment"]
+        if not isinstance(comment, str):
+            raise SystemExit("Comment must be a string")
+        comments[folder_path] = comment
+
+    return comments
+
+
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
 
@@ -90,6 +134,9 @@ def main(argv: list[str] | None = None) -> int:
     root_path = args.root.resolve()
 
     comments = load_comments(args.comments_file)
+    if args.existing:
+        existing_comments = load_existing(args.existing)
+        comments = {**existing_comments, **comments}
     result = scan_directory(
         root_path,
         max_depth=args.max_depth,
