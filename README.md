@@ -158,7 +158,3 @@ $ npm run package
 ... electron-builder  version=24.13.3 os=25.0.0
 ... building target=DMG arch=arm64 file=dist/share-and-tell-electron-0.1.0-arm64.dmg
 ```
-
-## License
-
-Released under the MIT License © Princeton University.
